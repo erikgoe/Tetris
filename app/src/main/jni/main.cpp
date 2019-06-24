@@ -1,10 +1,11 @@
+#include <cmath>
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include "SFML/Network.hpp"
 #include "math.h"
-#include <cmath>
+#include "Game.h"
 
 int main( int argc, char* argv[] ) {
     sf::VideoMode screen( sf::VideoMode::getDesktopMode() );
@@ -15,6 +16,10 @@ int main( int argc, char* argv[] ) {
     sf::View view = window.getDefaultView();
 
     bool active = true;
+
+    // Game data
+    Game game( sf::Vector2f( screen.width, screen.height ) );
+    sf::Clock game_timer;
 
     while ( window.isOpen() ) {
         sf::Event event;
@@ -33,7 +38,7 @@ int main( int argc, char* argv[] ) {
                 view.setCenter( event.size.width / 2, event.size.height / 2 );
                 window.setView( view );
                 break;
-                
+
             case sf::Event::MouseLeft:
                 active = false;
                 break;
@@ -43,9 +48,16 @@ int main( int argc, char* argv[] ) {
             }
         }
 
+        if ( game_timer.getElapsedTime().asSeconds() > 0.5f ) {
+            game_timer.restart();
+            game.next_step();
+        }
+
         if ( active ) {
-            window.clear( sf::Color::Cyan );
-            
+            window.clear( sf::Color( 127, 127, 127 ) );
+
+            game.draw( window );
+
             window.display();
         } else {
             sf::sleep( sf::milliseconds( 100 ) );

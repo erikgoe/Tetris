@@ -5,6 +5,9 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := tetris
 
 LOCAL_SRC_FILES := main.cpp
+LOCAL_SRC_FILES += Board.cpp
+LOCAL_SRC_FILES += Figure.cpp
+LOCAL_SRC_FILES += Game.cpp
 
 LOCAL_SHARED_LIBRARIES := sfml-system-d
 LOCAL_SHARED_LIBRARIES += sfml-window-d
