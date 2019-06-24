@@ -14,7 +14,7 @@ public:
         }
     }
 
-    bool contains( const Figure &figure );
+    bool is_on_solid( const Figure &figure );
 
     void add( const Figure &figure );
 

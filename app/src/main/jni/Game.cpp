@@ -19,18 +19,20 @@ void Game::create_new_figure() {
 void Game::next_step() {
     if ( !current_figure ) {
         create_new_figure();
-        if ( board->contains( *current_figure ) ) {
+        if ( board->is_on_solid( *current_figure ) ) {
             // restart game
             board = std::make_shared<Board>( board_size );
             current_figure = nullptr;
         }
-    } else {
+    }
+    // If current exists now
+    if ( current_figure ) {
         // Move current token down
         current_figure->move_down();
 
         bool stop_figure = false;
 
-        if ( board->contains( *current_figure ) ) {
+        if ( board->is_on_solid( *current_figure ) ) {
             // stop block
             board->add( *current_figure );
             current_figure = nullptr;

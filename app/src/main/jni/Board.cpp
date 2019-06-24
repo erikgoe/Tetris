@@ -1,6 +1,6 @@
 #include "Board.h"
 
-bool Board::contains( const Figure &figure ) {
+bool Board::is_on_solid( const Figure &figure ) {
     for ( auto &p : figure.pieces ) {
         if ( p.y + 1 >= field.size() || field[p.y + 1][p.x] ) {
             return true;

@@ -22,40 +22,40 @@ float Figure::block_size{ 10.f };
 
 Figure::Figure( FigureType type, int x_position ) {
     if ( type == FigureType::I ) {
-        pieces.push_back( sf::Vector2i( x_position, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position + 3, 0 ) );
+        pieces.push_back( sf::Vector2i( x_position, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 2, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 3, -1 ) );
     } else if ( type == FigureType::J ) {
+        pieces.push_back( sf::Vector2i( x_position, -1 ) );
         pieces.push_back( sf::Vector2i( x_position, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 2, 1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
+        pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
     } else if ( type == FigureType::L ) {
+        pieces.push_back( sf::Vector2i( x_position + 2, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position, 0 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 2, 1 ) );
     } else if ( type == FigureType::O ) {
+        pieces.push_back( sf::Vector2i( x_position, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, -1 ) );
         pieces.push_back( sf::Vector2i( x_position, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
     } else if ( type == FigureType::S ) {
+        pieces.push_back( sf::Vector2i( x_position + 1, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 2, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position, 0 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
+    } else if ( type == FigureType::T ) {
+        pieces.push_back( sf::Vector2i( x_position + 1, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
-    } else if ( type == FigureType::T ) {
-        pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 2, 1 ) );
     } else if ( type == FigureType::Z ) {
-        pieces.push_back( sf::Vector2i( x_position, 0 ) );
+        pieces.push_back( sf::Vector2i( x_position, -1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 1, -1 ) );
         pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position + 1, 1 ) );
-        pieces.push_back( sf::Vector2i( x_position + 2, 1 ) );
+        pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
     }
     color = get_figure_color( type );
 }
