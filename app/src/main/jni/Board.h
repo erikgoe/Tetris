@@ -15,6 +15,9 @@ public:
     }
 
     bool is_on_solid( const Figure &figure );
+    bool collides( const Figure &figure );
+
+    bool is_occupied( const sf::Vector2i &position );
 
     void add( const Figure &figure );
 

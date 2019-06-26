@@ -8,6 +8,17 @@ bool Board::is_on_solid( const Figure &figure ) {
     }
     return false;
 }
+bool Board::collides( const Figure &figure ) {
+    for ( auto &p : figure.pieces ) {
+        if ( p.y >= field.size() || field[p.y][p.x] ) {
+            return true;
+        }
+    }
+    return false;
+}
+bool Board::is_occupied( const sf::Vector2i &position ) {
+    return field[position.y][position.x];
+}
 
 void Board::add( const Figure &figure ) {
     figures.push_back( figure );
