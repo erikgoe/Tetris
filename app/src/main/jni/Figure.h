@@ -33,5 +33,16 @@ struct Figure {
     /// Moves the figure only when possible
     void move_delta( int x_delta, int board_width, std::function<bool( const sf::Vector2i & )> collision_detector );
 
+    /// Returns true when any block is in the first row
+    bool touches_ceiling();
+
+    /// Rotates only when possible
+    void rotate_left( std::function<bool( const sf::Vector2i & )> collision_detector, const sf::Vector2i &board_size );
+    /// Rotates only when possible
+    void rotate_right( std::function<bool( const sf::Vector2i & )> collision_detector, const sf::Vector2i &board_size );
+
+    /// Removes elements on this row and moves once above it
+    void remove_row( int y );
+
     void draw( sf::RenderTarget &target, const sf::Vector2f &board_offset );
 };

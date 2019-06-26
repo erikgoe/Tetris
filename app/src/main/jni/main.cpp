@@ -16,7 +16,8 @@ int main( int argc, char* argv[] ) {
     sf::View view = window.getDefaultView();
 
     bool active = true;
-    float touch_begin_x;
+    sf::Vector2f touch_begin;
+    bool touch_moved = false;
 
     // Game data
     Game game( sf::Vector2f( screen.width, screen.height ) );
@@ -49,23 +50,35 @@ int main( int argc, char* argv[] ) {
 
             case sf::Event::TouchBegan:
                 if ( event.touch.finger == 0 ) {
-                    touch_begin_x = event.touch.x;
+                    touch_begin = sf::Vector2f( event.touch.x, event.touch.y );
+                }
+                break;
+            case sf::Event::TouchEnded:
+                if ( event.touch.finger == 0 ) {
+                    if ( !touch_moved )
+                        game.touch( sf::Vector2f( event.touch.x, event.touch.y ) );
+                    touch_moved = false;
                 }
                 break;
             case sf::Event::TouchMoved:
                 if ( event.touch.finger == 0 ) {
-                    int delta = ( event.touch.x - touch_begin_x ) / Figure::block_size;
+                    int delta = ( event.touch.x - touch_begin.x ) / Figure::block_size;
                     game.move_figure( delta );
-                    touch_begin_x += delta * Figure::block_size;
+                    touch_begin.x += delta * Figure::block_size;
+                    if ( delta != 0 )
+                        touch_moved = true;
                 }
                 break;
             }
         }
 
         if ( active ) {
-            if ( game_timer.getElapsedTime().asSeconds() > 0.5f ) {
+            if ( game_timer.getElapsedTime().asSeconds() > 1.5f ) {
                 game_timer.restart();
                 game.next_step();
+            } else {
+                if ( game.micro_step() )
+                    game_timer.restart();
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );

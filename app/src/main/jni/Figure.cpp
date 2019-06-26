@@ -98,6 +98,59 @@ void Figure::move_delta( int x_delta, int board_width,
 
     position.x += x_delta;
 }
+bool Figure::touches_ceiling() {
+    for ( auto &p : pieces ) {
+        if ( p.y == 0 )
+            return true;
+    }
+    return false;
+}
+
+void Figure::rotate_left( std::function<bool( const sf::Vector2i & )> collision_detector,
+                          const sf::Vector2i &board_size ) {
+    // rotate around position + (1, 1)
+
+    // first test the impact
+    std::list<sf::Vector2i> temp_pieces;
+    for ( auto &p : pieces ) {
+        sf::Vector2i new_p( p.y - position.y + position.x, -p.x + position.x + position.y + 1 );
+        if ( new_p.x < 0 || new_p.x >= board_size.x || new_p.y < 0 || new_p.y >= board_size.y ||
+             collision_detector( new_p ) ) {
+            return; // abort rotation
+        }
+        temp_pieces.push_back( new_p );
+    }
+
+    pieces = temp_pieces;
+}
+void Figure::rotate_right( std::function<bool( const sf::Vector2i & )> collision_detector,
+                           const sf::Vector2i &board_size ) {
+    // rotate around position + (1, 1)
+
+    // first test the impact
+    std::list<sf::Vector2i> temp_pieces;
+    for ( auto &p : pieces ) {
+        sf::Vector2i new_p( -p.y + position.y + 1 + position.x, p.x - position.x + position.y );
+        if ( new_p.x < 0 || new_p.x >= board_size.x || new_p.y < 0 || new_p.y >= board_size.y ||
+             collision_detector( new_p ) ) {
+            return; // abort rotation
+        }
+        temp_pieces.push_back( new_p );
+    }
+
+    pieces = temp_pieces;
+}
+
+void Figure::remove_row( int y ) {
+    if ( position.y <= y )
+        position.y++;
+
+    pieces.remove_if( [&]( const sf::Vector2i &p ) { return p.y == y; } );
+    for ( auto itr = pieces.begin(); itr != pieces.end(); itr++ ) {
+        if ( itr->y < y )
+            itr->y++;
+    }
+}
 
 void Figure::draw( sf::RenderTarget &target, const sf::Vector2f &board_offset ) {
     static float border_size = 3;

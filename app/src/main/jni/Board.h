@@ -14,6 +14,9 @@ public:
         }
     }
 
+    bool is_full_row( int y );
+    bool remove_row( int y );
+
     bool is_on_solid( const Figure &figure );
     bool collides( const Figure &figure );
 

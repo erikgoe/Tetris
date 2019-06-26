@@ -1,7 +1,8 @@
 #include "Game.h"
 
-Game::Game( sf::Vector2f screen_size ) {
+Game::Game( const sf::Vector2f& screen_size ) {
     board = std::make_shared<Board>( board_size );
+    this->screen_size = screen_size;
     Figure::block_size = ( screen_size.x ) / ( board_size.x + 2 );
     board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
     spawn_x = board_size.x / 2 - 1;
@@ -44,6 +45,7 @@ void Game::next_step() {
                 // stop block
                 board->add( *current_figure );
                 current_figure = nullptr;
+                pull_block = false;
             }
         }
     }
@@ -53,10 +55,37 @@ void Game::next_step() {
     }
     if ( !current_figure ) {
         create_new_figure();
-        if(board->collides(*current_figure)) {
+        if ( board->collides( *current_figure ) ) {
             // early collision => end game
             board = std::make_shared<Board>( board_size );
             current_figure = nullptr;
+        }
+    }
+}
+bool Game::micro_step() {
+    if ( pull_block ) {
+        next_step();
+        return true;
+    } else
+        return false;
+}
+
+void Game::touch( const sf::Vector2f& position ) {
+    if ( position.y > board_offset.y + board_size.y * Figure::block_size ) {
+        int action = position.x * 5 / screen_size.x;
+        if ( action <= 1 ) {
+            // rotate left
+            if ( current_figure )
+                current_figure->rotate_left(
+                    [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); }, board_size );
+        } else if ( action >= 3 ) {
+            // rotate right
+            if ( current_figure )
+                current_figure->rotate_right(
+                    [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); }, board_size );
+        } else {
+            // pull down
+            pull_block = true;
         }
     }
 }
