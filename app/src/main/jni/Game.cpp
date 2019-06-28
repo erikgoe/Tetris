@@ -103,4 +103,15 @@ void Game::draw( sf::RenderTarget& target ) {
     rect.setOutlineThickness( 5 );
     rect.setPosition( board_offset );
     target.draw( rect );
+
+    // Button fields
+    sf::VertexArray va( sf::PrimitiveType::Lines, 4 );
+    va[0] =
+        sf::Vertex( sf::Vector2f( screen_size.x * 2 / 5, board_offset.y + ( board_size.y + 1 ) * Figure::block_size ) );
+    va[1] = sf::Vertex( sf::Vector2f( screen_size.x * 2 / 5, screen_size.y - Figure::block_size ) );
+    va[2] =
+        sf::Vertex( sf::Vector2f( screen_size.x * 3 / 5, board_offset.y + ( board_size.y + 1 ) * Figure::block_size ) );
+    va[3] = sf::Vertex( sf::Vector2f( screen_size.x * 3 / 5, screen_size.y - Figure::block_size ) );
+
+    target.draw( va );
 }
