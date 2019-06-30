@@ -6,6 +6,8 @@
 #include "SFML/Network.hpp"
 #include "math.h"
 #include "Game.h"
+#include "Tone.h"
+#include "Melodies.h"
 
 int main( int argc, char* argv[] ) {
     sf::VideoMode screen( sf::VideoMode::getDesktopMode() );
@@ -22,6 +24,15 @@ int main( int argc, char* argv[] ) {
     // Game data
     Game game( sf::Vector2f( screen.width, screen.height ) );
     sf::Clock game_timer;
+
+    // Music
+    auto music = create_basic_right_hand_melody()->generate_melody( sf::seconds( 1.6 ), 44100 );
+    sf::Sound sound;
+
+    sound.setBuffer( *music );
+    sound.setLoop( true );
+    sound.play();
+    game_timer.restart();
 
     while ( window.isOpen() ) {
         sf::Event event;
@@ -73,12 +84,13 @@ int main( int argc, char* argv[] ) {
         }
 
         if ( active ) {
-            if ( game_timer.getElapsedTime().asSeconds() > 1.5f ) {
+            if ( game_timer.getElapsedTime().asSeconds() > 1.6f ) {
                 game_timer.restart();
                 game.next_step();
             } else {
                 if ( game.micro_step() )
-                    game_timer.restart();
+                    ;
+                //game_timer.restart();
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );

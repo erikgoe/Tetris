@@ -8,6 +8,8 @@ LOCAL_SRC_FILES := main.cpp
 LOCAL_SRC_FILES += Board.cpp
 LOCAL_SRC_FILES += Figure.cpp
 LOCAL_SRC_FILES += Game.cpp
+LOCAL_SRC_FILES += Tone.cpp
+LOCAL_SRC_FILES += Melodies.cpp
 
 LOCAL_SHARED_LIBRARIES := sfml-system-d
 LOCAL_SHARED_LIBRARIES += sfml-window-d
