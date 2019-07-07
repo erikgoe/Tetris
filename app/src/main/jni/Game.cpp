@@ -46,6 +46,9 @@ void Game::restart_game() {
     points = 0;
     level = 1;
     cleared_rows = 0;
+
+    next_figure = nullptr;
+    shadow_figure = nullptr;
     increase_points( 0 ); // just initialize
 }
 
@@ -119,11 +122,9 @@ void Game::next_step() {
     }
 }
 bool Game::micro_step() {
-    if ( pull_block ) {
+    if ( pull_block )
         next_step();
-        return true;
-    } else
-        return false;
+    return pull_block;
 }
 
 void Game::touch( const sf::Vector2f& position ) {

@@ -30,6 +30,7 @@ int main( int argc, char* argv[] ) {
     // Game data
     Game game( sf::Vector2f( screen.width, screen.height ) );
     sf::Clock game_timer;
+    float elapsed_time = 0;
     float game_speed = 1.f; // seconds of a tick
 
     // Music
@@ -128,13 +129,12 @@ int main( int argc, char* argv[] ) {
         }
 
         if ( active ) {
-            if ( game_timer.getElapsedTime().asSeconds() > game_speed ) {
-                game_timer.restart();
+            elapsed_time += game_timer.restart().asSeconds();
+            if ( elapsed_time > game_speed ) {
+                elapsed_time -= game_speed;
                 game.next_step();
             } else {
-                if ( game.micro_step() )
-                    ;
-                // game_timer.restart();
+                game.micro_step();
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );
