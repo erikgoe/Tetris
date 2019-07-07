@@ -58,7 +58,6 @@ Game::Game( const sf::Vector2f& screen_size ) {
     board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
     spawn_x = board_size.x / 2 - 1;
 
-
     text_pos = sf::Vector2f( board_size.x * Figure::block_size + board_offset.x * 1.5f,
                              board_offset.y * 1.5f + 4 * Figure::block_size );
     float text_width = LEFT_PADDING * Figure::block_size / 8;
@@ -88,7 +87,7 @@ void Game::move_figure( int block_delta ) {
     }
 }
 
-void Game::next_step() {
+void Game::next_step( bool main_step ) {
     if ( game_over_timer == 1 ) {
         game_over_timer = 0;
         restart_game();
@@ -102,9 +101,11 @@ void Game::next_step() {
                     game_over_timer = 3;
                 } else {
                     // stop block
+                    pull_block = false;
+                    if ( !main_step )
+                        return; // only continue in main step
                     board->add( *current_figure, [&]( int row_count ) { increase_points( row_count ); } );
                     current_figure = nullptr;
-                    pull_block = false;
                 }
             }
         }
@@ -123,7 +124,7 @@ void Game::next_step() {
 }
 bool Game::micro_step() {
     if ( pull_block )
-        next_step();
+        next_step( false );
     return pull_block;
 }
 
