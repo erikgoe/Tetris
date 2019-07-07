@@ -60,6 +60,9 @@ Game::Game( const sf::Vector2f& screen_size ) {
                              board_offset.y * 1.5f + 4 * Figure::block_size );
     float text_width = LEFT_PADDING * Figure::block_size / 8;
 
+    end_label.set_color( sf::Color::White );
+    end_label.set_text( "GAME OVER", text_width * 30,
+                        screen_size * 0.5f - sf::Vector2f( text_width * 10, Figure::block_size ) );
     points_label.set_text( "POINTS", text_width * 6, text_pos );
     level_label.set_text( "LEVEL", text_width * 5, text_pos + sf::Vector2f( 0, Figure::block_size * 3 ) );
     rows_label.set_text( "CLEARED", text_width * 7, text_pos + sf::Vector2f( 0, Figure::block_size * 6 ) );
@@ -83,28 +86,35 @@ void Game::move_figure( int block_delta ) {
 }
 
 void Game::next_step() {
-    // If current exists now
-    if ( current_figure ) {
-        if ( board->is_on_solid( *current_figure ) ) {
-            if ( current_figure->position.y == 0 ) {
-                restart_game();
-            } else {
-                // stop block
-                board->add( *current_figure, [&]( int row_count ) { increase_points( row_count ); } );
-                current_figure = nullptr;
-                pull_block = false;
+    if ( game_over_timer == 1 ) {
+        game_over_timer = 0;
+        restart_game();
+    } else if ( game_over_timer > 0 ) {
+        game_over_timer--;
+    } else {
+        // If current exists now
+        if ( current_figure ) {
+            if ( board->is_on_solid( *current_figure ) ) {
+                if ( current_figure->position.y == 0 ) {
+                    game_over_timer = 3;
+                } else {
+                    // stop block
+                    board->add( *current_figure, [&]( int row_count ) { increase_points( row_count ); } );
+                    current_figure = nullptr;
+                    pull_block = false;
+                }
             }
         }
-    }
-    if ( current_figure ) {
-        // Move current token down
-        current_figure->move_down();
-    }
-    if ( !current_figure ) {
-        create_new_figure();
-        if ( board->collides( *current_figure ) ) {
-            // early collision => end game
-            restart_game();
+        if ( current_figure ) {
+            // Move current token down
+            current_figure->move_down();
+        }
+        if ( !current_figure ) {
+            create_new_figure();
+            if ( board->collides( *current_figure ) ) {
+                // early collision => end game
+                game_over_timer = 3;
+            }
         }
     }
 }
@@ -178,6 +188,11 @@ void Game::draw( sf::RenderTarget& target ) {
     va[2] =
         sf::Vertex( sf::Vector2f( screen_size.x * 3 / 5, board_offset.y + ( board_size.y + 1 ) * Figure::block_size ) );
     va[3] = sf::Vertex( sf::Vector2f( screen_size.x * 3 / 5, screen_size.y - Figure::block_size ) );
+
+    // Game over
+    if ( game_over_timer > 0 ) {
+        end_label.draw( target );
+    }
 
     target.draw( va );
 }

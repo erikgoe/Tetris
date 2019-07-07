@@ -15,6 +15,7 @@ class Game {
     std::shared_ptr<Figure> shadow_figure;
 
     sf::Vector2f text_pos;
+    BlockText end_label;
     BlockText points_text;
     BlockText rows_text;
     BlockText level_text;
@@ -31,6 +32,8 @@ class Game {
     int points = 0;
     int level = 1;
     int cleared_rows = 0;
+
+    int game_over_timer = 0;
 
     void create_new_figure();
     void update_shadow();

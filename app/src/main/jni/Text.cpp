@@ -14,7 +14,7 @@ BlockCharacter::BlockCharacter() {
     }
 }
 
-void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos ) {
+void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos, const sf::Color &color ) {
     // Update rects
     float block_width = char_width / ( CHAR_W + 1 );
     for ( int x = 0; x < CHAR_W; x++ ) {
@@ -26,7 +26,7 @@ void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos
     }
 
     // Define which rects to show
-    auto set = [&]( int x, int y ) { rects[x][y].setFillColor( sf::Color::White ); };
+    auto set = [&]( int x, int y ) { rects[x][y].setFillColor( color ); };
     if ( c == '0' ) {
         set( 0, 0 );
         set( 0, 1 );
@@ -276,19 +276,25 @@ void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos
         set( 2, 3 );
         set( 2, 4 );
     } else if ( c == 'N' ) {
+        set( 0, 1 );
         set( 0, 2 );
         set( 0, 3 );
         set( 0, 4 );
-        set( 1, 2 );
+        set( 1, 1 );
+        set( 2, 1 );
         set( 2, 2 );
         set( 2, 3 );
         set( 2, 4 );
     } else if ( c == 'O' ) {
+        set( 0, 0 );
+        set( 0, 1 );
         set( 0, 2 );
         set( 0, 3 );
         set( 0, 4 );
-        set( 1, 2 );
+        set( 1, 0 );
         set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
         set( 2, 2 );
         set( 2, 3 );
         set( 2, 4 );
@@ -418,7 +424,7 @@ void BlockText::set_text( const std::string &text, float width, const sf::Vector
     float char_width = std::min( width / char_count, Figure::block_size );
     chars.resize( char_count );
     for ( size_t i = 0; i < char_count; i++ ) {
-        chars[i].set_char( text[i], char_width, pos + sf::Vector2f( i, 0 ) * char_width );
+        chars[i].set_char( text[i], char_width, pos + sf::Vector2f( i, 0 ) * char_width, color );
     }
 }
 void BlockText::draw( sf::RenderTarget &target ) {
