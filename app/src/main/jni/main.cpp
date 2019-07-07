@@ -30,12 +30,13 @@ int main( int argc, char* argv[] ) {
     // Game data
     Game game( sf::Vector2f( screen.width, screen.height ) );
     sf::Clock game_timer;
+    float game_speed = 1.f; // seconds of a tick
 
     // Music
     auto melody = std::make_shared<Melody>();
     melody->change_tone_generator( add_triangle_tone );
     create_basic_right_hand_melody( melody );
-    auto music = melody->generate_melody( sf::seconds( 1.6 ), 44100 );
+    auto music = melody->generate_melody( sf::seconds( game_speed * 2 ), 44100 );
     sf::Sound sound;
 
     sound.setBuffer( *music );
@@ -127,7 +128,7 @@ int main( int argc, char* argv[] ) {
         }
 
         if ( active ) {
-            if ( game_timer.getElapsedTime().asSeconds() > 1.6f ) {
+            if ( game_timer.getElapsedTime().asSeconds() > game_speed ) {
                 game_timer.restart();
                 game.next_step();
             } else {

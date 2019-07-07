@@ -9,10 +9,11 @@ class Game {
     std::default_random_engine rand;
 
     std::shared_ptr<Figure> current_figure;
-    FigureType next_figure = FigureType::count;
+    std::shared_ptr<Figure> next_figure;
+    FigureType next_figure_type = FigureType::count;
 
     sf::Vector2f screen_size;
-    sf::Vector2i board_size = sf::Vector2i( 10, 15 );
+    sf::Vector2i board_size = sf::Vector2i( 10, 20 );
     sf::Vector2f board_offset;
     float spawn_x;
     bool pull_block = false;
