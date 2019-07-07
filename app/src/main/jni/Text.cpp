@@ -41,11 +41,11 @@ void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos
         set( 2, 3 );
         set( 2, 4 );
     } else if ( c == '1' ) {
-        set( 1, 0 );
-        set( 1, 1 );
-        set( 1, 2 );
-        set( 1, 3 );
-        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
     } else if ( c == '2' ) {
         set( 0, 0 );
         set( 0, 2 );

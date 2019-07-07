@@ -27,23 +27,37 @@ void Game::update_shadow() {
     shadow_figure->set_transparency( 60 );
 }
 void Game::increase_points( int count ) {
+    if ( count > 0 )
+        points += std::pow( 1.8, count ) + std::log2( level + 1 ) * std::pow( count, 1.5 );
     cleared_rows += count;
-    points += count * board_size.x * 120;
+    level = std::pow( static_cast<float>( cleared_rows ) / 3.f, 2 ) + 1;
 
+    // Update Scoreboard
     sf::Vector2f text_pos = sf::Vector2f( board_size.x * Figure::block_size + board_offset.x * 1.5f,
                                           board_offset.y * 1.5f + 4 * Figure::block_size );
     float text_width = LEFT_PADDING * Figure::block_size;
+
     points_text.set_text( std::to_string( points ), text_width, text_pos );
+    level_text.set_text( std::to_string( level ), text_width, text_pos + sf::Vector2f( 0, Figure::block_size * 2 ) );
+    rows_text.set_text( std::to_string( cleared_rows ), text_width,
+                        text_pos + sf::Vector2f( 0, Figure::block_size * 4 ) );
+}
+void Game::restart_game() {
+    board = std::make_shared<Board>( board_size );
+    current_figure = nullptr;
+    points = 0;
+    level = 1;
+    cleared_rows = 0;
+    increase_points( 0 ); // just initialize
 }
 
 Game::Game( const sf::Vector2f& screen_size ) {
-    board = std::make_shared<Board>( board_size );
     this->screen_size = screen_size;
     Figure::block_size = ( screen_size.x ) / ( board_size.x + 2 + LEFT_PADDING );
     board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
     spawn_x = board_size.x / 2 - 1;
 
-    increase_points( 0 ); // just initialize
+    restart_game();
 }
 
 int Game::get_current_figure_x_position() {
@@ -66,9 +80,7 @@ void Game::next_step() {
     if ( current_figure ) {
         if ( board->is_on_solid( *current_figure ) ) {
             if ( current_figure->position.y == 0 ) {
-                // restart the game
-                board = std::make_shared<Board>( board_size );
-                current_figure = nullptr;
+                restart_game();
             } else {
                 // stop block
                 board->add( *current_figure, [&]( int row_count ) { increase_points( row_count ); } );
@@ -85,8 +97,7 @@ void Game::next_step() {
         create_new_figure();
         if ( board->collides( *current_figure ) ) {
             // early collision => end game
-            board = std::make_shared<Board>( board_size );
-            current_figure = nullptr;
+            restart_game();
         }
     }
 }
@@ -146,7 +157,8 @@ void Game::draw( sf::RenderTarget& target ) {
     if ( next_figure )
         next_figure->draw( target, board_offset );
     points_text.draw( target );
-
+    level_text.draw( target );
+    rows_text.draw( target );
 
     // Button fields
     sf::VertexArray va( sf::PrimitiveType::Lines, 4 );

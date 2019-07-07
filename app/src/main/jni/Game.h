@@ -15,6 +15,8 @@ class Game {
     std::shared_ptr<Figure> shadow_figure;
 
     BlockText points_text;
+    BlockText rows_text;
+    BlockText level_text;
 
     sf::Vector2f screen_size;
     sf::Vector2i board_size = sf::Vector2i( 10, 20 );
@@ -23,11 +25,13 @@ class Game {
     bool pull_block = false;
 
     int points = 0;
+    int level = 1;
     int cleared_rows = 0;
 
     void create_new_figure();
     void update_shadow();
     void increase_points( int count );
+    void restart_game();
 
 public:
     Game( const sf::Vector2f &screen_size );
