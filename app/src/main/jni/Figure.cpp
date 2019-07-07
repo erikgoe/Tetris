@@ -27,10 +27,10 @@ float Figure::block_size{ 10.f };
 Figure::Figure( FigureType type, int x_position ) {
     position = sf::Vector2i( x_position, 0 );
     if ( type == FigureType::I ) {
+        pieces.push_back( sf::Vector2i( x_position - 1, 0 ) );
         pieces.push_back( sf::Vector2i( x_position, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 1, 0 ) );
         pieces.push_back( sf::Vector2i( x_position + 2, 0 ) );
-        pieces.push_back( sf::Vector2i( x_position + 3, 0 ) );
     } else if ( type == FigureType::J ) {
         pieces.push_back( sf::Vector2i( x_position, 0 ) );
         pieces.push_back( sf::Vector2i( x_position, 1 ) );

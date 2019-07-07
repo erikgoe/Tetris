@@ -19,8 +19,8 @@ void Game::create_new_figure() {
     next_figure_type = (FigureType) distribution( rand );
 
     next_figure = std::make_shared<Figure>( next_figure_type, board_size.x + 1 );
-    next_figure->rotate_right( []( const sf::Vector2i& ) { return false; }, board_size + sf::Vector2i( 5, 0 ) );
     next_figure->move_down();
+    next_figure->rotate_right( []( const sf::Vector2i& ) { return false; }, board_size + sf::Vector2i( 5, 0 ) );
 }
 
 int Game::get_current_figure_x_position() {
