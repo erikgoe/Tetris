@@ -1,5 +1,7 @@
 #include "Game.h"
 
+const int LEFT_PADDING = 3;
+
 void Game::create_new_figure() {
     rand.seed( std::random_device()() );
     std::uniform_int_distribution<int> distribution( 0, (int) FigureType::count - 1 );
@@ -26,15 +28,22 @@ void Game::update_shadow() {
 }
 void Game::increase_points( int count ) {
     cleared_rows += count;
-    points += count * board_size.x;
+    points += count * board_size.x * 120;
+
+    sf::Vector2f text_pos = sf::Vector2f( board_size.x * Figure::block_size + board_offset.x * 1.5f,
+                                          board_offset.y * 1.5f + 4 * Figure::block_size );
+    float text_width = LEFT_PADDING * Figure::block_size;
+    points_text.set_text( std::to_string( points ), text_width, text_pos );
 }
 
 Game::Game( const sf::Vector2f& screen_size ) {
     board = std::make_shared<Board>( board_size );
     this->screen_size = screen_size;
-    Figure::block_size = ( screen_size.x ) / ( board_size.x + 5 );
+    Figure::block_size = ( screen_size.x ) / ( board_size.x + 2 + LEFT_PADDING );
     board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
     spawn_x = board_size.x / 2 - 1;
+
+    increase_points( 0 ); // just initialize
 }
 
 int Game::get_current_figure_x_position() {
@@ -124,8 +133,6 @@ void Game::draw( sf::RenderTarget& target ) {
         current_figure->draw( target, board_offset );
     if ( shadow_figure )
         shadow_figure->draw( target, board_offset );
-    if ( next_figure )
-        next_figure->draw( target, board_offset );
 
     // Border
     sf::RectangleShape rect( sf::Vector2f( board_size ) * Figure::block_size );
@@ -134,6 +141,12 @@ void Game::draw( sf::RenderTarget& target ) {
     rect.setOutlineThickness( 5 );
     rect.setPosition( board_offset );
     target.draw( rect );
+
+    // Left panel
+    if ( next_figure )
+        next_figure->draw( target, board_offset );
+    points_text.draw( target );
+
 
     // Button fields
     sf::VertexArray va( sf::PrimitiveType::Lines, 4 );

@@ -9,6 +9,7 @@ add_executable(${PROJECT_NAME}
     Game.cpp
     Tone.cpp
     Melodies.cpp
+    Text.cpp
 )
 
 # includes

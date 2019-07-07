@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Board.h"
+#include "Text.h"
 #include <memory>
 #include <random>
 
@@ -9,9 +10,11 @@ class Game {
     std::default_random_engine rand;
 
     std::shared_ptr<Figure> current_figure;
+    FigureType next_figure_type = FigureType::count;
     std::shared_ptr<Figure> next_figure;
     std::shared_ptr<Figure> shadow_figure;
-    FigureType next_figure_type = FigureType::count;
+
+    BlockText points_text;
 
     sf::Vector2f screen_size;
     sf::Vector2i board_size = sf::Vector2i( 10, 20 );
@@ -30,9 +33,6 @@ public:
     Game( const sf::Vector2f &screen_size );
 
     int get_current_figure_x_position();
-    int get_points() { return points; }
-    int get_cleared_rows() { return cleared_rows; }
-    int get_level() { return points / 3; }
 
     void move_figure( int block_delta );
     void next_step();
