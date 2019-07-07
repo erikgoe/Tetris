@@ -74,20 +74,26 @@ void Game::touch( const sf::Vector2f& position ) {
     if ( position.y > board_offset.y + board_size.y * Figure::block_size ) {
         int action = position.x * 5 / screen_size.x;
         if ( action <= 1 ) {
-            // rotate left
-            if ( current_figure )
-                current_figure->rotate_left(
-                    [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); }, board_size );
+            rotate_left();
         } else if ( action >= 3 ) {
-            // rotate right
-            if ( current_figure )
-                current_figure->rotate_right(
-                    [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); }, board_size );
+            rotate_right();
         } else {
-            // pull down
-            pull_block = true;
+            pull_block_down();
         }
     }
+}
+void Game::pull_block_down() {
+    pull_block = true;
+}
+void Game::rotate_left() {
+    if ( current_figure )
+        current_figure->rotate_left( [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); },
+                                     board_size );
+}
+void Game::rotate_right() {
+    if ( current_figure )
+        current_figure->rotate_right( [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); },
+                                      board_size );
 }
 
 void Game::draw( sf::RenderTarget& target ) {

@@ -10,9 +10,15 @@
 #include "Melodies.h"
 
 int main( int argc, char* argv[] ) {
+#ifdef SFML_ANDROID
     sf::VideoMode screen( sf::VideoMode::getDesktopMode() );
+    auto window_style = sf::Style::Fullscreen;
+#else
+    sf::VideoMode screen( 450, 800 );
+    auto window_style = sf::Style::Default;
+#endif
 
-    sf::RenderWindow window( screen, "", sf::Style::Fullscreen );
+    sf::RenderWindow window( screen, "Tetris", window_style );
     window.setFramerateLimit( 30 );
 
     sf::View view = window.getDefaultView();
@@ -42,10 +48,6 @@ int main( int argc, char* argv[] ) {
             case sf::Event::Closed:
                 window.close();
                 break;
-            case sf::Event::KeyPressed:
-                if ( event.key.code == sf::Keyboard::Escape )
-                    window.close();
-                break;
             case sf::Event::Resized:
                 view.setSize( event.size.width, event.size.height );
                 view.setCenter( event.size.width / 2, event.size.height / 2 );
@@ -59,6 +61,7 @@ int main( int argc, char* argv[] ) {
                 active = true;
                 break;
 
+            // Touch control
             case sf::Event::TouchBegan:
                 if ( event.touch.finger == 0 ) {
                     touch_begin = sf::Vector2f( event.touch.x, event.touch.y );
@@ -80,6 +83,43 @@ int main( int argc, char* argv[] ) {
                         touch_moved = true;
                 }
                 break;
+
+            // Keyboard control
+            case sf::Event::KeyPressed:
+                if ( event.key.code == sf::Keyboard::Escape ) {
+                    window.close();
+                } else if ( event.key.code == sf::Keyboard::A ) {
+                    game.move_figure( -1 );
+                } else if ( event.key.code == sf::Keyboard::D ) {
+                    game.move_figure( 1 );
+                } else if ( event.key.code == sf::Keyboard::S ) {
+                    game.pull_block_down();
+                } else if ( event.key.code == sf::Keyboard::Q ) {
+                    game.rotate_left();
+                } else if ( event.key.code == sf::Keyboard::E ) {
+                    game.rotate_right();
+                }
+                break;
+
+            // Mouse Control
+            case sf::Event::MouseButtonPressed:
+                touch_begin = sf::Vector2f( event.mouseButton.x, event.mouseButton.y );
+                break;
+            case sf::Event::MouseButtonReleased:
+                if ( !touch_moved )
+                    game.touch( sf::Vector2f( event.mouseButton.x, event.mouseButton.y ) );
+                touch_moved = false;
+                touch_begin = sf::Vector2f();
+                break;
+            case sf::Event::MouseMoved:
+                if ( touch_begin != sf::Vector2f() ) {
+                    int delta = ( event.mouseMove.x - touch_begin.x ) / Figure::block_size;
+                    game.move_figure( delta );
+                    touch_begin.x += delta * Figure::block_size;
+                    if ( delta != 0 )
+                        touch_moved = true;
+                }
+                break;
             }
         }
 
@@ -90,7 +130,7 @@ int main( int argc, char* argv[] ) {
             } else {
                 if ( game.micro_step() )
                     ;
-                //game_timer.restart();
+                // game_timer.restart();
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );

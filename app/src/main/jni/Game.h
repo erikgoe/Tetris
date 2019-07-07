@@ -28,6 +28,9 @@ public:
     /// Returns true if the micro step was accepted
     bool micro_step();
     void touch( const sf::Vector2f &position );
+    void pull_block_down();
+    void rotate_left();
+    void rotate_right();
 
     void draw( sf::RenderTarget &target );
 };
