@@ -52,6 +52,10 @@ int main( int argc, char* argv[] ) {
     // Music
     SoundManager s_mgr;
     s_mgr.generate_level_music( game_speed );
+    // Pregenerate music
+    for ( int i = 0; i < 10; i++ ) {
+        s_mgr.generate_level_music( std::pow( 0.9, std::sqrt( i ) ) );
+    }
     sf::Sound sound;
 
     sound.setBuffer( *s_mgr.buffers[game_speed] );
@@ -156,7 +160,7 @@ int main( int argc, char* argv[] ) {
                 float old_game_speed = game_speed;
                 sf::Time old_offset = sound.getPlayingOffset();
                 level = game.get_level();
-                game_speed = std::pow( 0.9, level / 10 );
+                game_speed = std::pow( 0.9, std::sqrt( level / 10 ) );
 
                 s_mgr.generate_level_music( game_speed );
                 sound.setBuffer( *s_mgr.buffers[game_speed] );
