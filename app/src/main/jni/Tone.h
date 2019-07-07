@@ -16,6 +16,10 @@ void add_sawtooth_tone( std::vector<s16> &samples, size_t samples_offset, size_t
 void add_square_tone( std::vector<s16> &samples, size_t samples_offset, size_t sample_rate, float tone_frequency,
                       const sf::Time &duration, float volume );
 
+/// Add a new tone in triangle form to an existing sound buffer.
+void add_triangle_tone( std::vector<s16> &samples, size_t samples_offset, size_t sample_rate, float tone_frequency,
+                        const sf::Time &duration, float volume );
+
 // Represents a simple note
 struct Note {
     enum Tones {

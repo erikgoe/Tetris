@@ -32,7 +32,7 @@ int main( int argc, char* argv[] ) {
     sf::Clock game_timer;
 
     // Music
-    auto music = create_basic_right_hand_melody()->generate_melody( sf::seconds( 1.6 ), 44100 );
+    auto music = create_basic_right_hand_melody( add_triangle_tone )->generate_melody( sf::seconds( 1.6 ), 44100 );
     sf::Sound sound;
 
     sound.setBuffer( *music );

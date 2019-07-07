@@ -63,7 +63,7 @@ float get_frequency( Note::Tones tone ) {
 void add_sawtooth_tone( std::vector<s16> &samples, size_t samples_offset, size_t sample_rate, float tone_frequency,
                         const sf::Time &duration, float volume ) {
     float period_length = static_cast<float>( sample_rate ) / tone_frequency;
-    u64 slope = ( 2 << 15 ) * volume / period_length;
+    u64 slope = ( 2 << 14 ) / period_length;
     size_t sample_count = duration.asSeconds() * sample_rate;
 
     u64 curr_val = 2 << 14;
@@ -71,7 +71,7 @@ void add_sawtooth_tone( std::vector<s16> &samples, size_t samples_offset, size_t
           i < samples.size() && ( i < sample_count + samples_offset ||
                                   std::abs( static_cast<s32>( curr_val % ( 2 << 15 ) ) - ( 2 << 14 ) ) > slope );
           i++ ) {
-        samples[i] += static_cast<s32>( curr_val % ( 2 << 15 ) ) - ( 2 << 14 );
+        samples[i] += ( static_cast<s32>( curr_val % ( 2 << 15 ) ) - ( 2 << 14 ) ) * volume;
         curr_val += slope;
     }
 }
@@ -81,10 +81,27 @@ void add_square_tone( std::vector<s16> &samples, size_t samples_offset, size_t s
     u64 half_period_length = static_cast<float>( sample_rate ) / ( tone_frequency * 2 );
     size_t sample_count = duration.asSeconds() * sample_rate;
 
-    for ( size_t i = samples_offset; i < samples.size() && i < sample_count; i++ ) {
-        samples[i] += i / half_period_length % 2 ? ( 2 << 14 ) : -( 2 << 14 );
+    for ( size_t i = samples_offset; i < samples.size() && i < sample_count + samples_offset; i++ ) {
+        samples[i] += ( i / half_period_length % 2 ? ( 2 << 14 ) : -( 2 << 14 ) ) * volume;
     }
 }
+
+void add_triangle_tone( std::vector<s16> &samples, size_t samples_offset, size_t sample_rate, float tone_frequency,
+                        const sf::Time &duration, float volume ) {
+    float period_length = static_cast<float>( sample_rate ) / tone_frequency;
+    s32 slope = ( 2 << 14 ) / period_length * 2;
+    size_t sample_count = duration.asSeconds() * sample_rate;
+
+    s32 curr_val = 0;
+    for ( size_t i = samples_offset;
+          i < samples.size() && ( i < sample_count + samples_offset || std::abs( curr_val ) > slope ); i++ ) {
+        samples[i] += curr_val * volume;
+        if ( std::abs( curr_val + slope ) > ( 2 << 14 ) )
+            slope = -slope;
+        curr_val += slope;
+    }
+}
+
 
 std::unique_ptr<sf::SoundBuffer> Melody::generate_melody( const sf::Time &beat_duration, unsigned int sample_rate ) {
     // Calculate melody length
@@ -113,7 +130,7 @@ std::unique_ptr<sf::SoundBuffer> Melody::generate_melody( const sf::Time &beat_d
         size_t samples_offset = 0;
         for ( auto &note : line ) {
             ( *generator )( buffer, samples_offset, sample_rate, get_frequency( note.tone ),
-                            sf::seconds( beat_duration_seconds * note.beat_frac ), 0.5 );
+                            sf::seconds( beat_duration_seconds * note.beat_frac ), 0.2 );
             samples_offset += note.beat_frac * beat_duration_seconds * sample_rate;
         }
         generator++;
