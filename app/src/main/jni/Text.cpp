@@ -140,6 +140,268 @@ void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos
         set( 2, 2 );
         set( 2, 3 );
         set( 2, 4 );
+    } else if ( c == 'A' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'B' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'C' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 4 );
+    } else if ( c == 'D' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 4 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+    } else if ( c == 'E' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 2 );
+        set( 2, 4 );
+    } else if ( c == 'F' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 2 );
+    } else if ( c == 'G' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 2 );
+        set( 2, 3 );
+    } else if ( c == 'H' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'I' ) {
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 3 );
+        set( 1, 4 );
+    } else if ( c == 'J' ) {
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'K' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'L' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 4 );
+        set( 2, 4 );
+    } else if ( c == 'M' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 1 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'N' ) {
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'O' ) {
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'P' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+    } else if ( c == 'Q' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'R' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 3 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 4 );
+    } else if ( c == 'S' ) {
+        set( 0, 1 );
+        set( 0, 4 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 3 );
+    } else if ( c == 'T' ) {
+        set( 1, 0 );
+        set( 1, 1 );
+        set( 1, 2 );
+        set( 1, 3 );
+        set( 1, 4 );
+        set( 0, 0 );
+        set( 2, 0 );
+    } else if ( c == 'U' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'V' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+    } else if ( c == 'W' ) {
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 3 );
+        set( 2, 1 );
+        set( 2, 2 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'X' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 3 );
+        set( 0, 4 );
+        set( 1, 2 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 3 );
+        set( 2, 4 );
+    } else if ( c == 'Y' ) {
+        set( 0, 0 );
+        set( 0, 1 );
+        set( 0, 2 );
+        set( 1, 3 );
+        set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 1 );
+        set( 2, 2 );
+    } else if ( c == 'Z' ) {
+        set( 0, 0 );
+        set( 0, 3 );
+        set( 1, 0 );
+        set( 1, 2 );
+        set( 1, 4 );
+        set( 2, 1 );
+        set( 2, 4 );
     }
 }
 

@@ -14,9 +14,13 @@ class Game {
     std::shared_ptr<Figure> next_figure;
     std::shared_ptr<Figure> shadow_figure;
 
+    sf::Vector2f text_pos;
     BlockText points_text;
     BlockText rows_text;
     BlockText level_text;
+    BlockText points_label;
+    BlockText rows_label;
+    BlockText level_label;
 
     sf::Vector2f screen_size;
     sf::Vector2i board_size = sf::Vector2i( 10, 20 );

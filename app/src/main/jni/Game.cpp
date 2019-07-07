@@ -33,14 +33,12 @@ void Game::increase_points( int count ) {
     level = std::pow( static_cast<float>( cleared_rows ) / 3.f, 2 ) + 1;
 
     // Update Scoreboard
-    sf::Vector2f text_pos = sf::Vector2f( board_size.x * Figure::block_size + board_offset.x * 1.5f,
-                                          board_offset.y * 1.5f + 4 * Figure::block_size );
     float text_width = LEFT_PADDING * Figure::block_size;
 
-    points_text.set_text( std::to_string( points ), text_width, text_pos );
-    level_text.set_text( std::to_string( level ), text_width, text_pos + sf::Vector2f( 0, Figure::block_size * 2 ) );
+    points_text.set_text( std::to_string( points ), text_width, text_pos + sf::Vector2f( 0, Figure::block_size * 1 ) );
+    level_text.set_text( std::to_string( level ), text_width, text_pos + sf::Vector2f( 0, Figure::block_size * 4 ) );
     rows_text.set_text( std::to_string( cleared_rows ), text_width,
-                        text_pos + sf::Vector2f( 0, Figure::block_size * 4 ) );
+                        text_pos + sf::Vector2f( 0, Figure::block_size * 7 ) );
 }
 void Game::restart_game() {
     board = std::make_shared<Board>( board_size );
@@ -56,6 +54,15 @@ Game::Game( const sf::Vector2f& screen_size ) {
     Figure::block_size = ( screen_size.x ) / ( board_size.x + 2 + LEFT_PADDING );
     board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
     spawn_x = board_size.x / 2 - 1;
+
+
+    text_pos = sf::Vector2f( board_size.x * Figure::block_size + board_offset.x * 1.5f,
+                             board_offset.y * 1.5f + 4 * Figure::block_size );
+    float text_width = LEFT_PADDING * Figure::block_size / 8;
+
+    points_label.set_text( "POINTS", text_width * 6, text_pos );
+    level_label.set_text( "LEVEL", text_width * 5, text_pos + sf::Vector2f( 0, Figure::block_size * 3 ) );
+    rows_label.set_text( "CLEARED", text_width * 7, text_pos + sf::Vector2f( 0, Figure::block_size * 6 ) );
 
     restart_game();
 }
@@ -159,6 +166,9 @@ void Game::draw( sf::RenderTarget& target ) {
     points_text.draw( target );
     level_text.draw( target );
     rows_text.draw( target );
+    points_label.draw( target );
+    level_label.draw( target );
+    rows_label.draw( target );
 
     // Button fields
     sf::VertexArray va( sf::PrimitiveType::Lines, 4 );
