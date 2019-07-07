@@ -10,8 +10,8 @@
 #include "Melodies.h"
 
 struct SoundManager {
-    std::map<int, std::shared_ptr<Melody>> melodies;
-    std::map<int, std::shared_ptr<sf::SoundBuffer>> buffers;
+    std::map<float, std::shared_ptr<Melody>> melodies;
+    std::map<float, std::shared_ptr<sf::SoundBuffer>> buffers;
 
     void generate_level_music( float speed ) {
         if ( buffers.find( speed ) == buffers.end() ) {
@@ -157,10 +157,10 @@ int main( int argc, char* argv[] ) {
                 sf::Time old_offset = sound.getPlayingOffset();
                 level = game.get_level();
                 game_speed = std::pow( 0.9, level / 10 );
-                
+
                 s_mgr.generate_level_music( game_speed );
                 sound.setBuffer( *s_mgr.buffers[game_speed] );
-                sound.setPlayingOffset( old_offset );
+                sound.setPlayingOffset( old_offset * game_speed / old_game_speed );
                 sound.play();
             }
 
