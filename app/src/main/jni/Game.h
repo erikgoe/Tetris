@@ -44,9 +44,10 @@ public:
     Game( const sf::Vector2f &screen_size );
 
     int get_current_figure_x_position();
+    int get_level() { return level; }
 
     void move_figure( int block_delta );
-    void next_step(bool main_step = true);
+    void next_step( bool main_step = true );
     /// Returns true if the micro step was accepted
     bool micro_step();
     void touch( const sf::Vector2f &position );

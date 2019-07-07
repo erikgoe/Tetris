@@ -9,6 +9,20 @@
 #include "Tone.h"
 #include "Melodies.h"
 
+struct SoundManager {
+    std::map<int, std::shared_ptr<Melody>> melodies;
+    std::map<int, std::shared_ptr<sf::SoundBuffer>> buffers;
+
+    void generate_level_music( float speed ) {
+        if ( buffers.find( speed ) == buffers.end() ) {
+            auto melody = std::make_shared<Melody>();
+            melody->change_tone_generator( add_triangle_tone );
+            create_basic_right_hand_melody( melody );
+            buffers[speed] = melody->generate_melody( sf::seconds( speed * 2.f ), 44100 );
+        }
+    }
+};
+
 int main( int argc, char* argv[] ) {
 #ifdef SFML_SYSTEM_ANDROID
     sf::VideoMode screen( sf::VideoMode::getDesktopMode() );
@@ -30,17 +44,17 @@ int main( int argc, char* argv[] ) {
     // Game data
     Game game( sf::Vector2f( screen.width, screen.height ) );
     sf::Clock game_timer;
+    sf::Clock sound_timer;
     float elapsed_time = 0;
     float game_speed = 1.f; // seconds of a tick
+    int level = 1;
 
     // Music
-    auto melody = std::make_shared<Melody>();
-    melody->change_tone_generator( add_triangle_tone );
-    create_basic_right_hand_melody( melody );
-    auto music = melody->generate_melody( sf::seconds( game_speed * 2 ), 44100 );
+    SoundManager s_mgr;
+    s_mgr.generate_level_music( game_speed );
     sf::Sound sound;
 
-    sound.setBuffer( *music );
+    sound.setBuffer( *s_mgr.buffers[game_speed] );
     sound.setLoop( true );
     sound.play();
     game_timer.restart();
@@ -135,6 +149,19 @@ int main( int argc, char* argv[] ) {
                 game.next_step();
             } else {
                 game.micro_step();
+            }
+
+            // Select music
+            if ( level != game.get_level() ) {
+                float old_game_speed = game_speed;
+                sf::Time old_offset = sound.getPlayingOffset();
+                level = game.get_level();
+                game_speed = std::pow( 0.9, level / 10 );
+                
+                s_mgr.generate_level_music( game_speed );
+                sound.setBuffer( *s_mgr.buffers[game_speed] );
+                sound.setPlayingOffset( old_offset );
+                sound.play();
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );
