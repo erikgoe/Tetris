@@ -112,44 +112,25 @@ bool Figure::touches_ceiling() {
 void Figure::rotate_left( std::function<bool( const sf::Vector2i & )> collision_detector,
                           const sf::Vector2i &board_size ) {
     // rotate around position + (1, 1)
-
-    // first test the impact
-    int fix_delta_x = 0; // move offset to fit rotation
-    int fix_delta_y = 0; // move offset to fit rotation
-    std::list<sf::Vector2i> temp_pieces;
-    do {
-        // Apply fix
-        if ( fix_delta_x != 0 ) {
-            move_delta( fix_delta_x, board_size.x, collision_detector );
-            fix_delta_x = 0;
-        }
-        while ( fix_delta_y > 0 ) {
-            move_down();
-            fix_delta_y--;
-        }
-
-        temp_pieces.clear();
-        for ( auto &p : pieces ) {
-            sf::Vector2i new_p( p.y - position.y + position.x, -p.x + position.x + position.y + 1 );
-            if ( new_p.x < 0 ) {
-                fix_delta_x = -new_p.x;
-            } else if ( new_p.x >= board_size.x ) {
-                fix_delta_x = new_p.x - board_size.x - 1;
-            } else if ( new_p.y < 0 ) {
-                fix_delta_y = -new_p.y;
-            } else if ( new_p.y >= board_size.y || collision_detector( new_p ) ) {
-                return; // abort rotation
-            }
-            temp_pieces.push_back( new_p );
-        }
-    } while ( fix_delta_x != 0 || fix_delta_y != 0 );
-
-    pieces = temp_pieces;
+    apply_rotation(
+        [&]( const sf::Vector2i &p ) {
+            return sf::Vector2i( p.y - position.y + position.x, -p.x + position.x + position.y + 1 );
+        },
+        collision_detector, board_size );
 }
 void Figure::rotate_right( std::function<bool( const sf::Vector2i & )> collision_detector,
                            const sf::Vector2i &board_size ) {
     // rotate around position + (1, 1)
+    apply_rotation(
+        [&]( const sf::Vector2i &p ) {
+            return sf::Vector2i( -p.y + position.y + 1 + position.x, p.x - position.x + position.y );
+        },
+        collision_detector, board_size );
+}
 
+void Figure::apply_rotation( std::function<sf::Vector2i( const sf::Vector2i & )> rotator,
+                             std::function<bool( const sf::Vector2i & )> collision_detector,
+                             const sf::Vector2i &board_size ) {
     // first test the impact
     int fix_delta_x = 0; // move offset to fit rotation
     int fix_delta_y = 0; // move offset to fit rotation
@@ -167,7 +148,7 @@ void Figure::rotate_right( std::function<bool( const sf::Vector2i & )> collision
 
         temp_pieces.clear();
         for ( auto &p : pieces ) {
-            sf::Vector2i new_p( -p.y + position.y + 1 + position.x, p.x - position.x + position.y );
+            sf::Vector2i new_p = rotator( p );
             if ( new_p.x < 0 ) {
                 fix_delta_x = -new_p.x;
             } else if ( new_p.x >= board_size.x ) {

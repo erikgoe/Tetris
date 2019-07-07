@@ -41,6 +41,12 @@ struct Figure {
     /// Rotates only when possible
     void rotate_right( std::function<bool( const sf::Vector2i & )> collision_detector, const sf::Vector2i &board_size );
 
+private:
+    void apply_rotation( std::function<sf::Vector2i(const sf::Vector2i &)> rotator, std::function<bool( const sf::Vector2i & )> collision_detector,
+                         const sf::Vector2i &board_size );
+
+public:
+
     /// Removes elements on this row and moves once above it
     void remove_row( int y );
 
