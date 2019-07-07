@@ -10,6 +10,7 @@ class Game {
 
     std::shared_ptr<Figure> current_figure;
     std::shared_ptr<Figure> next_figure;
+    std::shared_ptr<Figure> shadow_figure;
     FigureType next_figure_type = FigureType::count;
 
     sf::Vector2f screen_size;
@@ -18,10 +19,11 @@ class Game {
     float spawn_x;
     bool pull_block = false;
 
+    void create_new_figure();
+    void update_shadow();
+
 public:
     Game( const sf::Vector2f &screen_size );
-
-    void create_new_figure();
 
     int get_current_figure_x_position();
     void move_figure( int block_delta );

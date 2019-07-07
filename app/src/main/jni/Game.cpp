@@ -1,13 +1,5 @@
 #include "Game.h"
 
-Game::Game( const sf::Vector2f& screen_size ) {
-    board = std::make_shared<Board>( board_size );
-    this->screen_size = screen_size;
-    Figure::block_size = ( screen_size.x ) / ( board_size.x + 5 );
-    board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
-    spawn_x = board_size.x / 2 - 1;
-}
-
 void Game::create_new_figure() {
     rand.seed( std::random_device()() );
     std::uniform_int_distribution<int> distribution( 0, (int) FigureType::count - 1 );
@@ -16,11 +8,29 @@ void Game::create_new_figure() {
         next_figure_type = (FigureType) distribution( rand );
 
     current_figure = std::make_shared<Figure>( next_figure_type, spawn_x );
+    update_shadow();
     next_figure_type = (FigureType) distribution( rand );
 
     next_figure = std::make_shared<Figure>( next_figure_type, board_size.x + 1 );
     next_figure->move_down();
     next_figure->rotate_right( []( const sf::Vector2i& ) { return false; }, board_size + sf::Vector2i( 5, 0 ) );
+}
+
+void Game::update_shadow() {
+    shadow_figure = std::make_shared<Figure>( *current_figure );
+
+    while ( !board->is_on_solid( *shadow_figure ) ) {
+        shadow_figure->move_down();
+    }
+    shadow_figure->set_transparency( 60 );
+}
+
+Game::Game( const sf::Vector2f& screen_size ) {
+    board = std::make_shared<Board>( board_size );
+    this->screen_size = screen_size;
+    Figure::block_size = ( screen_size.x ) / ( board_size.x + 5 );
+    board_offset = sf::Vector2f( Figure::block_size, Figure::block_size * 2.f );
+    spawn_x = board_size.x / 2 - 1;
 }
 
 int Game::get_current_figure_x_position() {
@@ -34,6 +44,7 @@ void Game::move_figure( int block_delta ) {
     if ( current_figure ) {
         current_figure->move_delta( block_delta, board_size.x,
                                     [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); } );
+        update_shadow();
     }
 }
 
@@ -93,11 +104,13 @@ void Game::rotate_left() {
     if ( current_figure )
         current_figure->rotate_left( [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); },
                                      board_size );
+    update_shadow();
 }
 void Game::rotate_right() {
     if ( current_figure )
         current_figure->rotate_right( [&]( const sf::Vector2i& position ) { return board->is_occupied( position ); },
                                       board_size );
+    update_shadow();
 }
 
 void Game::draw( sf::RenderTarget& target ) {
@@ -105,6 +118,8 @@ void Game::draw( sf::RenderTarget& target ) {
     board->draw( target, board_offset );
     if ( current_figure )
         current_figure->draw( target, board_offset );
+    if ( shadow_figure )
+        shadow_figure->draw( target, board_offset );
     if ( next_figure )
         next_figure->draw( target, board_offset );
 

@@ -44,5 +44,8 @@ struct Figure {
     /// Removes elements on this row and moves once above it
     void remove_row( int y );
 
+    // set the alpha color value
+    void set_transparency( int alpha );
+
     void draw( sf::RenderTarget &target, const sf::Vector2f &board_offset );
 };

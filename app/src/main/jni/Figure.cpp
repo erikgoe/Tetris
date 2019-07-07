@@ -19,6 +19,8 @@ sf::Color get_figure_color( FigureType type ) {
         return sf::Color::Magenta;
     } else if ( type == FigureType::Z ) {
         return sf::Color::Red;
+    } else {
+        return sf::Color::Black;
     }
 }
 
@@ -150,6 +152,10 @@ void Figure::remove_row( int y ) {
         if ( itr->y < y )
             itr->y++;
     }
+}
+
+void Figure::set_transparency( int alpha ) {
+    color.a = alpha;
 }
 
 void Figure::draw( sf::RenderTarget &target, const sf::Vector2f &board_offset ) {

@@ -8,7 +8,7 @@ bool Board::is_full_row( int y ) {
     return true;
 }
 
-bool Board::remove_row( int y ) {
+void Board::remove_row( int y ) {
     // Remove from fields
     for ( int i = y; i > 0; i-- ) {
         field[i] = field[i - 1];
