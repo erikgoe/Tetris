@@ -22,7 +22,7 @@ public:
 
     bool is_occupied( const sf::Vector2i &position );
 
-    void add( const Figure &figure );
+    void add( const Figure &figure, std::function<void( int )> points_callback );
 
     void draw( sf::RenderTarget &target, const sf::Vector2f &board_offset );
 };

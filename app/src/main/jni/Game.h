@@ -19,13 +19,21 @@ class Game {
     float spawn_x;
     bool pull_block = false;
 
+    int points = 0;
+    int cleared_rows = 0;
+
     void create_new_figure();
     void update_shadow();
+    void increase_points( int count );
 
 public:
     Game( const sf::Vector2f &screen_size );
 
     int get_current_figure_x_position();
+    int get_points() { return points; }
+    int get_cleared_rows() { return cleared_rows; }
+    int get_level() { return points / 3; }
+
     void move_figure( int block_delta );
     void next_step();
     /// Returns true if the micro step was accepted

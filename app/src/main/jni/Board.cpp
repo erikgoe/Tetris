@@ -44,7 +44,7 @@ bool Board::is_occupied( const sf::Vector2i &position ) {
     return field[position.y][position.x];
 }
 
-void Board::add( const Figure &figure ) {
+void Board::add( const Figure &figure, std::function<void( int )> points_callback ) {
     std::vector<int> rows_to_remove;
 
     figures.push_back( figure );
@@ -58,6 +58,8 @@ void Board::add( const Figure &figure ) {
     }
 
     // Remove rows
+    if ( !rows_to_remove.empty() )
+        points_callback( rows_to_remove.size() );
     std::sort( rows_to_remove.begin(), rows_to_remove.end() );
     for ( auto &r : rows_to_remove ) {
         remove_row( r );

@@ -24,6 +24,10 @@ void Game::update_shadow() {
     }
     shadow_figure->set_transparency( 60 );
 }
+void Game::increase_points( int count ) {
+    cleared_rows += count;
+    points += count * board_size.x;
+}
 
 Game::Game( const sf::Vector2f& screen_size ) {
     board = std::make_shared<Board>( board_size );
@@ -58,7 +62,7 @@ void Game::next_step() {
                 current_figure = nullptr;
             } else {
                 // stop block
-                board->add( *current_figure );
+                board->add( *current_figure, [&]( int row_count ) { increase_points( row_count ); } );
                 current_figure = nullptr;
                 pull_block = false;
             }
