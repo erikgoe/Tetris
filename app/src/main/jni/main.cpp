@@ -10,7 +10,7 @@
 #include "Melodies.h"
 
 int main( int argc, char* argv[] ) {
-#ifdef SFML_ANDROID
+#ifdef SFML_SYSTEM_ANDROID
     sf::VideoMode screen( sf::VideoMode::getDesktopMode() );
     auto window_style = sf::Style::Fullscreen;
 #else

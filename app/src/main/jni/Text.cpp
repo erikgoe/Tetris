@@ -172,6 +172,8 @@ void BlockCharacter::set_char( char c, float char_width, const sf::Vector2f &pos
         set( 0, 4 );
         set( 1, 0 );
         set( 1, 4 );
+        set( 2, 0 );
+        set( 2, 4 );
     } else if ( c == 'D' ) {
         set( 0, 0 );
         set( 0, 1 );
