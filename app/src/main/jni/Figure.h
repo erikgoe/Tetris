@@ -30,8 +30,8 @@ struct Figure {
 
     void move_down();
 
-    /// Moves the figure only when possible
-    void move_delta( int x_delta, int board_width, std::function<bool( const sf::Vector2i & )> collision_detector );
+    /// Moves the figure only when possible. Returns true when moved
+    bool move_delta( int x_delta, int board_width, std::function<bool( const sf::Vector2i & )> collision_detector );
 
     /// Returns true when any block is in the first row
     bool touches_ceiling();

@@ -73,7 +73,7 @@ void Figure::move_down() {
     }
     position.y++;
 }
-void Figure::move_delta( int x_delta, int board_width,
+bool Figure::move_delta( int x_delta, int board_width,
                          std::function<bool( const sf::Vector2i & )> collision_detector ) {
     // Limit x_delta with collsision detection
     for ( auto &p : pieces ) {
@@ -99,6 +99,7 @@ void Figure::move_delta( int x_delta, int board_width,
     }
 
     position.x += x_delta;
+    return x_delta != 0;
 }
 bool Figure::touches_ceiling() {
     for ( auto &p : pieces ) {
@@ -113,15 +114,35 @@ void Figure::rotate_left( std::function<bool( const sf::Vector2i & )> collision_
     // rotate around position + (1, 1)
 
     // first test the impact
+    int fix_delta_x = 0; // move offset to fit rotation
+    int fix_delta_y = 0; // move offset to fit rotation
     std::list<sf::Vector2i> temp_pieces;
-    for ( auto &p : pieces ) {
-        sf::Vector2i new_p( p.y - position.y + position.x, -p.x + position.x + position.y + 1 );
-        if ( new_p.x < 0 || new_p.x >= board_size.x || new_p.y < 0 || new_p.y >= board_size.y ||
-             collision_detector( new_p ) ) {
-            return; // abort rotation
+    do {
+        // Apply fix
+        if ( fix_delta_x != 0 ) {
+            move_delta( fix_delta_x, board_size.x, collision_detector );
+            fix_delta_x = 0;
         }
-        temp_pieces.push_back( new_p );
-    }
+        while ( fix_delta_y > 0 ) {
+            move_down();
+            fix_delta_y--;
+        }
+
+        temp_pieces.clear();
+        for ( auto &p : pieces ) {
+            sf::Vector2i new_p( p.y - position.y + position.x, -p.x + position.x + position.y + 1 );
+            if ( new_p.x < 0 ) {
+                fix_delta_x = -new_p.x;
+            } else if ( new_p.x >= board_size.x ) {
+                fix_delta_x = new_p.x - board_size.x - 1;
+            } else if ( new_p.y < 0 ) {
+                fix_delta_y = -new_p.y;
+            } else if ( new_p.y >= board_size.y || collision_detector( new_p ) ) {
+                return; // abort rotation
+            }
+            temp_pieces.push_back( new_p );
+        }
+    } while ( fix_delta_x != 0 || fix_delta_y != 0 );
 
     pieces = temp_pieces;
 }
@@ -130,15 +151,35 @@ void Figure::rotate_right( std::function<bool( const sf::Vector2i & )> collision
     // rotate around position + (1, 1)
 
     // first test the impact
+    int fix_delta_x = 0; // move offset to fit rotation
+    int fix_delta_y = 0; // move offset to fit rotation
     std::list<sf::Vector2i> temp_pieces;
-    for ( auto &p : pieces ) {
-        sf::Vector2i new_p( -p.y + position.y + 1 + position.x, p.x - position.x + position.y );
-        if ( new_p.x < 0 || new_p.x >= board_size.x || new_p.y < 0 || new_p.y >= board_size.y ||
-             collision_detector( new_p ) ) {
-            return; // abort rotation
+    do {
+        // Apply fix
+        if ( fix_delta_x != 0 ) {
+            move_delta( fix_delta_x, board_size.x, collision_detector );
+            fix_delta_x = 0;
         }
-        temp_pieces.push_back( new_p );
-    }
+        while ( fix_delta_y > 0 ) {
+            move_down();
+            fix_delta_y--;
+        }
+
+        temp_pieces.clear();
+        for ( auto &p : pieces ) {
+            sf::Vector2i new_p( -p.y + position.y + 1 + position.x, p.x - position.x + position.y );
+            if ( new_p.x < 0 ) {
+                fix_delta_x = -new_p.x;
+            } else if ( new_p.x >= board_size.x ) {
+                fix_delta_x = new_p.x - board_size.x - 1;
+            } else if ( new_p.y < 0 ) {
+                fix_delta_y = -new_p.y;
+            } else if ( new_p.y >= board_size.y || collision_detector( new_p ) ) {
+                return; // abort rotation
+            }
+            temp_pieces.push_back( new_p );
+        }
+    } while ( fix_delta_x != 0 || fix_delta_y != 0 );
 
     pieces = temp_pieces;
 }
