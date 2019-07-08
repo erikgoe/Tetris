@@ -1,6 +1,14 @@
 # Tetris
 A Tetris app for Android (and Desktop) written with SFML
 
+## Features
+* Basic tetris mechanics
+* Android and desktop app
+* Touch, mouse or keyboard controls
+* Scoreboard
+* Music (with dynamic speed)
+* No assets. All graphics, fonts, sounds are generated
+
 ## Dependencies
 ### SFML
 https://github.com/SFML/sfml#install
@@ -28,3 +36,9 @@ mkdir build && cd build
 cmake ..
 make
 ```
+## Todo
+* Fix crash when exiting
+* Parallel music generation
+* Button icons
+* effects
+* 
