@@ -6,22 +6,7 @@
 #include "SFML/Network.hpp"
 #include "math.h"
 #include "Game.h"
-#include "Tone.h"
-#include "Melodies.h"
-
-struct SoundManager {
-    std::map<float, std::shared_ptr<Melody>> melodies;
-    std::map<float, std::shared_ptr<sf::SoundBuffer>> buffers;
-
-    void generate_level_music( float speed ) {
-        if ( buffers.find( speed ) == buffers.end() ) {
-            auto melody = std::make_shared<Melody>();
-            melody->change_tone_generator( add_triangle_tone );
-            create_basic_right_hand_melody( melody );
-            buffers[speed] = melody->generate_melody( sf::seconds( speed * 2.f ), 44100 );
-        }
-    }
-};
+#include "SoundManager.h"
 
 int main( int argc, char* argv[] ) {
 #ifdef SFML_SYSTEM_ANDROID
@@ -51,14 +36,13 @@ int main( int argc, char* argv[] ) {
 
     // Music
     SoundManager s_mgr;
-    s_mgr.generate_level_music( game_speed );
     // Pregenerate music
-    for ( int i = 0; i < 10; i++ ) {
-        s_mgr.generate_level_music( std::pow( 0.9, std::sqrt( i ) ) );
+    for ( int i = 0; i < 2; i++ ) {
+        s_mgr.query_level( std::pow( 0.9, std::sqrt( i ) ) );
     }
     sf::Sound sound;
 
-    sound.setBuffer( *s_mgr.buffers[game_speed] );
+    sound.setBuffer( *s_mgr.get_level_music( game_speed ) );
     sound.setLoop( true );
     sound.play();
     game_timer.restart();
@@ -162,10 +146,12 @@ int main( int argc, char* argv[] ) {
                 level = game.get_level();
                 game_speed = std::pow( 0.9, std::sqrt( level / 10 ) );
 
-                s_mgr.generate_level_music( game_speed );
-                sound.setBuffer( *s_mgr.buffers[game_speed] );
+                sound.setBuffer( *s_mgr.get_level_music( game_speed ) );
                 sound.setPlayingOffset( old_offset * game_speed / old_game_speed );
                 sound.play();
+
+                // Generate next level
+                s_mgr.query_level( std::pow( 0.9, std::sqrt( level / 10 + 1 ) ) );
             }
 
             window.clear( sf::Color( 127, 127, 127 ) );

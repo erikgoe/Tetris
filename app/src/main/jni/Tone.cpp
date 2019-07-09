@@ -103,7 +103,7 @@ void add_triangle_tone( std::vector<s16> &samples, size_t samples_offset, size_t
 }
 
 
-std::unique_ptr<sf::SoundBuffer> Melody::generate_melody( const sf::Time &beat_duration, unsigned int sample_rate ) {
+std::shared_ptr<sf::SoundBuffer> Melody::generate_melody( const sf::Time &beat_duration, unsigned int sample_rate ) {
     // Calculate melody length
     float beat_duration_seconds = beat_duration.asSeconds();
     size_t max_beat_count = 0;

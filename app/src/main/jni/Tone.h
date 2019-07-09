@@ -3,6 +3,7 @@
 #include "SFML/Audio.hpp"
 #include <list>
 #include <functional>
+#include <memory>
 
 using s16 = sf::Int16;
 using s32 = sf::Int32;
@@ -80,5 +81,5 @@ public:
 
     void change_tone_generator( const GeneratorFunction &generator ) { tone_generators.back() = generator; }
 
-    std::unique_ptr<sf::SoundBuffer> generate_melody( const sf::Time &beat_duration, unsigned int sample_rate );
+    std::shared_ptr<sf::SoundBuffer> generate_melody( const sf::Time &beat_duration, unsigned int sample_rate );
 };
