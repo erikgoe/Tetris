@@ -40,4 +40,3 @@ make
 * Fix crash when exiting
 * Button icons
 * effects
-* 

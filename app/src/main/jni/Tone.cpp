@@ -137,7 +137,7 @@ std::shared_ptr<sf::SoundBuffer> Melody::generate_melody( const sf::Time &beat_d
     }
 
     // Create sound
-    auto sound_buffer = std::unique_ptr<sf::SoundBuffer>( new sf::SoundBuffer() );
+    auto sound_buffer = std::make_shared<sf::SoundBuffer>();
     sound_buffer->loadFromSamples( &buffer[0], samples, 1, sample_rate );
 
     return sound_buffer;
