@@ -22,10 +22,14 @@ class SoundManager {
                 sf::Lock lock( mx );
 
                 // Only query tasks which have not been executed earlier
+                std::list<float> to_remove;
                 for ( auto q : query ) {
                     if ( buffers.find( q ) != buffers.end() ) {
-                        query.remove( q );
+                        to_remove.push_back( q );
                     }
+                }
+                for ( auto q : to_remove ) {
+                    query.remove( q );
                 }
 
                 if ( !query.empty() ) {
