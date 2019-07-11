@@ -38,7 +38,6 @@ make
 ```
 ## Todo
 * Fix crash when exiting
-* Parallel music generation
 * Button icons
 * effects
 * 
