@@ -37,7 +37,7 @@ int main( int argc, char* argv[] ) {
     // Music
     SoundManager s_mgr;
     // Pregenerate music
-    for ( int i = 0; i < 2; i++ ) {
+    for ( int i = 0; i < 30; i++ ) {
         s_mgr.query_level( std::pow( 0.9, std::sqrt( i ) ) );
     }
     sf::Sound sound;

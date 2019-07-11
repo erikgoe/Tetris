@@ -4,7 +4,6 @@
 #include <atomic>
 #include <map>
 #include <thread>
-#include <iostream>
 
 class SoundManager {
     std::map<float, std::shared_ptr<sf::SoundBuffer>> buffers;
@@ -39,7 +38,6 @@ class SoundManager {
 
             // Generate music
             for ( auto &q : local_query ) {
-                std::cout << "Creating level\n";
                 generate_level_music( q );
             }
 
@@ -85,7 +83,7 @@ public:
 
     std::shared_ptr<sf::SoundBuffer> get_level_music( float speed ) {
         bool found = false;
-        // TODO busy waiting
+        // TODO fix busy waiting
         while ( true ) {
             {
                 sf::Lock lock( mx );
